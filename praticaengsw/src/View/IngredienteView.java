@@ -17,6 +17,8 @@ public class IngredienteView extends javax.swing.JFrame {
         initComponents();
         listar();
         fillFornecedorCB();
+        
+        this.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -25,6 +27,7 @@ public class IngredienteView extends javax.swing.JFrame {
 
         erroDialog = new javax.swing.JDialog();
         erroDialog.setTitle("Erro");
+        erroDialog.setLocationRelativeTo(null);
         jLabel1 = new javax.swing.JLabel();
         disposeButton = new javax.swing.JButton();
         salvarButton = new javax.swing.JButton();
@@ -215,7 +218,7 @@ public class IngredienteView extends javax.swing.JFrame {
                                             .addGap(84, 84, 84)
                                             .addComponent(pesquisarButton))))
                                 .addComponent(medidaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 16, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
