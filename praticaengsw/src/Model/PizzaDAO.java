@@ -20,12 +20,20 @@ public class PizzaDAO {
         return instance;
     }
 
-    public void insertAuxiliar(List<IngredienteBEAN> ingredienteList) {
+    public void insertAuxiliar(List<IngredienteBEAN> ingredienteList) throws SQLException {
+        System.out.println("4");
+        List<PizzaBEAN> listPizza = findAllPizza();
+        
+        int id = 0;
+        System.out.println("5");
+        for (PizzaBEAN pizza : listPizza) {
+            id = pizza.getId();
+            System.out.println(id);
+        }
 
-        long id = MySQLDAO.executeQuery("SELECT MAX(id) FROM pizza");
+        System.out.println(id);
 
         String query = "INSERT INTO aux_pizza_ingrediente (id_pizza,id_ingrediente) VALUES (?,?)";
-        System.out.println("sdasdasd");
         for (IngredienteBEAN ingrediente : ingredienteList) {
             MySQLDAO.executeQuery(query, id + 1, ingrediente.getId());
         }
@@ -33,20 +41,17 @@ public class PizzaDAO {
 
     public void updateAuxiliar(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
         String query = "INSERT INTO aux_pizza_ingrediente (id_pizza,id_ingrediente) VALUES (?,?)";
-        
-      
-        
+
         for (IngredienteBEAN ingrediente : ingredienteList) {
             MySQLDAO.executeQuery(query, pizza.getId(), ingrediente.getId());
         }
     }
 
-    public long create(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
-
+    public long create(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) throws SQLException {
+        System.out.println("Teste2");
         insertAuxiliar(ingredienteList);
-        
-        String query = "INSERT INTO pizza (nome,detalhes,status) VALUES (?,?,?)";
 
+        String query = "INSERT INTO pizza (nome,detalhes,status) VALUES (?,?,?)";
         return MySQLDAO.executeQuery(query, pizza.getNome(), pizza.getDetalhes(), pizza.getStatus());
     }
 
