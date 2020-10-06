@@ -20,9 +20,22 @@ public class PizzaDAO {
         return instance;
     }
 
-    public void insertAuxiliar(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
-        String query = "INSERT INTO aux_pizza_ingrediente (id_pizza,id_ingrediente) VALUES (?,?)";
+    public void insertAuxiliar(List<IngredienteBEAN> ingredienteList) {
 
+        long id = MySQLDAO.executeQuery("SELECT MAX(id) FROM pizza");
+
+        String query = "INSERT INTO aux_pizza_ingrediente (id_pizza,id_ingrediente) VALUES (?,?)";
+        System.out.println("sdasdasd");
+        for (IngredienteBEAN ingrediente : ingredienteList) {
+            MySQLDAO.executeQuery(query, id + 1, ingrediente.getId());
+        }
+    }
+
+    public void updateAuxiliar(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
+        String query = "INSERT INTO aux_pizza_ingrediente (id_pizza,id_ingrediente) VALUES (?,?)";
+        
+      
+        
         for (IngredienteBEAN ingrediente : ingredienteList) {
             MySQLDAO.executeQuery(query, pizza.getId(), ingrediente.getId());
         }
@@ -30,8 +43,8 @@ public class PizzaDAO {
 
     public long create(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
 
-        insertAuxiliar(pizza, ingredienteList);
-
+        insertAuxiliar(ingredienteList);
+        
         String query = "INSERT INTO pizza (nome,detalhes,status) VALUES (?,?,?)";
 
         return MySQLDAO.executeQuery(query, pizza.getNome(), pizza.getDetalhes(), pizza.getStatus());
@@ -42,9 +55,14 @@ public class PizzaDAO {
         String query = "delete from aux_pizza_ingrediente where id_pizza=?";
         MySQLDAO.executeQuery(query, pizza.getId());
 
-        insertAuxiliar(pizza, ingredienteList);
+        updateAuxiliar(pizza, ingredienteList);
 
         query = "UPDATE pizza SET nome=?, detalhes=?, status=? WHERE id = ?";
+        MySQLDAO.executeQuery(query, pizza.getNome(), pizza.getDetalhes(), pizza.getStatus(), pizza.getId());
+    }
+
+    public void update(PizzaBEAN pizza) {
+        String query = "UPDATE pizza SET nome=?, detalhes=?, status=? WHERE id = ?";
         MySQLDAO.executeQuery(query, pizza.getNome(), pizza.getDetalhes(), pizza.getStatus(), pizza.getId());
     }
 

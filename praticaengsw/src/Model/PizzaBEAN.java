@@ -14,6 +14,17 @@ public class PizzaBEAN {
         this.status = status;
     }
 
+    public PizzaBEAN(String nome, String detalhes, int status) {
+        this.id = id;
+        this.nome = nome;
+        this.detalhes = detalhes;
+        this.status = status;
+    }
+
+    public PizzaBEAN(int id) {
+        this.id = id;
+    }
+
     public PizzaBEAN() {
     }
 

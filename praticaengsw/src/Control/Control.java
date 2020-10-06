@@ -7,6 +7,8 @@ import Model.FornecedorBEAN;
 import Model.FornecedorDAO;
 import Model.IngredienteBEAN;
 import Model.IngredienteDAO;
+import Model.PizzaBEAN;
+import Model.PizzaDAO;
 
 public class Control {
 
@@ -68,5 +70,29 @@ public class Control {
 
     public ArrayList<IngredienteBEAN> listaIngrediente() {
         return IngredienteDAO.getInstance().findAllIngrediente();
+    }
+
+    public ArrayList<IngredienteBEAN> listIngredientePizza(PizzaBEAN pizza) {
+        return PizzaDAO.getInstance().listIngredientePizza(pizza);
+    }
+
+    public void addPizza(PizzaBEAN pizza, ArrayList<IngredienteBEAN> ingredienteList) {
+        PizzaDAO.getInstance().create(pizza, ingredienteList);
+    }
+
+    public void updatePizza(PizzaBEAN pizza, ArrayList<IngredienteBEAN> ingredienteList) {
+        PizzaDAO.getInstance().update(pizza, ingredienteList);
+    }
+
+    public void updatePizza(PizzaBEAN pizza) {
+        PizzaDAO.getInstance().update(pizza);
+    }
+
+    public PizzaBEAN findPizza(int id) {
+        return PizzaDAO.getInstance().findPizza(id);
+    }
+
+    public ArrayList<PizzaBEAN> listaPizza() {
+        return PizzaDAO.getInstance().findAllPizza();
     }
 }

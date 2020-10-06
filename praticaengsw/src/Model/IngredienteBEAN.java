@@ -23,8 +23,17 @@ public class IngredienteBEAN {
         this.id_fornecedor = id_fornecedor;
         this.status = 1;
     }
-    
-    public IngredienteBEAN() {}
+
+    public IngredienteBEAN(String nome) {
+        this.nome = nome;
+    }
+
+    public IngredienteBEAN(int id) {
+        this.id = id;
+    }
+
+    public IngredienteBEAN() {
+    }
 
     public int getId() {
         return id;

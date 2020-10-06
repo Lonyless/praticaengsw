@@ -9,14 +9,16 @@ import java.util.List;
 import Control.Control;
 import Model.FornecedorBEAN;
 import Model.IngredienteBEAN;
+import Model.PizzaBEAN;
 import javax.swing.table.DefaultTableModel;
 
 public class PizzaView extends javax.swing.JFrame {
 
     public PizzaView() {
         initComponents();
-        listar();
-        fillFornecedorCB();
+
+        fillIngredienteCB();
+        fillPizzaTable();
 
         this.setLocationRelativeTo(null);
     }
@@ -33,10 +35,10 @@ public class PizzaView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ingredienteTable1 = new javax.swing.JTable();
         jScrollPane = new javax.swing.JScrollPane();
-        ingredienteTable = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        cancelarButton1 = new javax.swing.JButton();
-        nomeTF1 = new javax.swing.JTextField();
+        ingredienteInsertTable = new javax.swing.JTable();
+        ingredienteCB = new javax.swing.JComboBox<>();
+        removeIngredienteButton = new javax.swing.JButton();
+        descTF = new javax.swing.JTextField();
         novoButton = new javax.swing.JButton();
         cancelarButton = new javax.swing.JButton();
         nomeTF = new javax.swing.JTextField();
@@ -45,14 +47,14 @@ public class PizzaView extends javax.swing.JFrame {
         desativarButton = new javax.swing.JButton();
         pesquisarButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        ingredienteTable2 = new javax.swing.JTable();
+        PizzaTable = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        ingredienteTable3 = new javax.swing.JTable();
+        ingredienteViewTable = new javax.swing.JTable();
         pesquisarTF = new javax.swing.JTextField();
         ativosCK = new javax.swing.JCheckBox();
         editarButton = new javax.swing.JButton();
         salvarButton = new javax.swing.JButton();
-        cancelarButton2 = new javax.swing.JButton();
+        addIngredienteButton = new javax.swing.JButton();
 
         erroDialog.setMinimumSize(new java.awt.Dimension(273, 135));
 
@@ -118,47 +120,48 @@ public class PizzaView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(ingredienteTable1);
         if (ingredienteTable1.getColumnModel().getColumnCount() > 0) {
             ingredienteTable1.getColumnModel().getColumn(0).setPreferredWidth(25);
-            ingredienteTable1.getColumnModel().getColumn(0).setHeaderValue("ID");
             ingredienteTable1.getColumnModel().getColumn(2).setPreferredWidth(60);
             ingredienteTable1.getColumnModel().getColumn(2).setHeaderValue("Tipo Medida");
             ingredienteTable1.getColumnModel().getColumn(3).setHeaderValue("Fornecedor");
             ingredienteTable1.getColumnModel().getColumn(4).setPreferredWidth(30);
-            ingredienteTable1.getColumnModel().getColumn(4).setHeaderValue("Ativo");
         }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        ingredienteTable.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
-        ingredienteTable.setModel(new javax.swing.table.DefaultTableModel(
+        ingredienteInsertTable.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        ingredienteInsertTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Ingrediente"
+                "ID", "Ingrediente"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false
+                true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane.setViewportView(ingredienteTable);
+        jScrollPane.setViewportView(ingredienteInsertTable);
+        if (ingredienteInsertTable.getColumnModel().getColumnCount() > 0) {
+            ingredienteInsertTable.getColumnModel().getColumn(0).setMaxWidth(40);
+        }
 
-        jComboBox1.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Ingrediente>" }));
+        ingredienteCB.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        ingredienteCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Ingrediente>" }));
 
-        cancelarButton1.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
-        cancelarButton1.setText("Rem");
-        cancelarButton1.addActionListener(new java.awt.event.ActionListener() {
+        removeIngredienteButton.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        removeIngredienteButton.setText("Rem");
+        removeIngredienteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelarButton1ActionPerformed(evt);
+                removeIngredienteButtonActionPerformed(evt);
             }
         });
 
-        nomeTF1.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        descTF.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
 
         novoButton.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         novoButton.setText("Novo");
@@ -195,20 +198,20 @@ public class PizzaView extends javax.swing.JFrame {
             }
         });
 
-        ingredienteTable2.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
-        ingredienteTable2.setModel(new javax.swing.table.DefaultTableModel(
+        PizzaTable.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        PizzaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nome", "Ativo"
+                "ID", "Nome", "Detalhes", "Ativo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -219,32 +222,35 @@ public class PizzaView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(ingredienteTable2);
-        if (ingredienteTable2.getColumnModel().getColumnCount() > 0) {
-            ingredienteTable2.getColumnModel().getColumn(0).setPreferredWidth(25);
-            ingredienteTable2.getColumnModel().getColumn(0).setHeaderValue("ID");
-            ingredienteTable2.getColumnModel().getColumn(2).setPreferredWidth(30);
-            ingredienteTable2.getColumnModel().getColumn(2).setHeaderValue("Ativo");
+        PizzaTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PizzaTableMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(PizzaTable);
+        if (PizzaTable.getColumnModel().getColumnCount() > 0) {
+            PizzaTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+            PizzaTable.getColumnModel().getColumn(3).setPreferredWidth(30);
         }
 
-        ingredienteTable3.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
-        ingredienteTable3.setModel(new javax.swing.table.DefaultTableModel(
+        ingredienteViewTable.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        ingredienteViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Ingrediente"
+                "Id", "Ingrediente"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false
+                true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(ingredienteTable3);
+        jScrollPane3.setViewportView(ingredienteViewTable);
 
         pesquisarTF.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
 
@@ -267,11 +273,11 @@ public class PizzaView extends javax.swing.JFrame {
             }
         });
 
-        cancelarButton2.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
-        cancelarButton2.setText("Add");
-        cancelarButton2.addActionListener(new java.awt.event.ActionListener() {
+        addIngredienteButton.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        addIngredienteButton.setText("Add");
+        addIngredienteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelarButton2ActionPerformed(evt);
+                addIngredienteButtonActionPerformed(evt);
             }
         });
 
@@ -293,7 +299,7 @@ public class PizzaView extends javax.swing.JFrame {
                                 .addComponent(desativarButton, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ingredienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(pesquisarTF, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(8, 8, 8)
@@ -304,16 +310,16 @@ public class PizzaView extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cancelarButton2)
+                                .addComponent(addIngredienteButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cancelarButton1))
+                                .addComponent(removeIngredienteButton))
                             .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(nomeLabel1)
                             .addComponent(nomeLabel)
                             .addComponent(nomeTF, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-                            .addComponent(nomeTF1))
+                            .addComponent(descTF))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -335,7 +341,7 @@ public class PizzaView extends javax.swing.JFrame {
                         .addGap(7, 7, 7)
                         .addComponent(nomeLabel)
                         .addGap(15, 15, 15)
-                        .addComponent(nomeTF1))
+                        .addComponent(descTF))
                     .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(salvarButton)
@@ -343,9 +349,9 @@ public class PizzaView extends javax.swing.JFrame {
                         .addComponent(cancelarButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelarButton1)
-                    .addComponent(cancelarButton2))
+                    .addComponent(ingredienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeIngredienteButton)
+                    .addComponent(addIngredienteButton))
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -366,18 +372,19 @@ public class PizzaView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void salvarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarButtonActionPerformed
-        alterar(selectedIngrediente.getId(), nomeTF.getText(), (String) medidaCB.getSelectedItem(), fornecedorCB.getSelectedIndex());
-        listar();
+
+        alterar(nomeTF.getText(), descTF.getText());
         nomeTF.setText("");
-        medidaCB.setSelectedIndex(0);
-        fornecedorCB.setSelectedIndex(0);
+        descTF.setText("");
+
     }//GEN-LAST:event_salvarButtonActionPerformed
 
     private void desativarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desativarButtonActionPerformed
-        DefaultTableModel model = (DefaultTableModel) ingredienteTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
 
-        desativarAtivar((Integer) model.getValueAt(ingredienteTable.getSelectedRow(), 0), (Boolean) model.getValueAt(ingredienteTable.getSelectedRow(), 4));
-        listar();
+        desativarAtivar((Integer) model.getValueAt(ingredienteInsertTable.getSelectedRow(), 0), (Boolean) model.getValueAt(ingredienteInsertTable.getSelectedRow(), 4));
+
+        fillPizzaTable();
     }//GEN-LAST:event_desativarButtonActionPerformed
 
     private void pesquisarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarButtonActionPerformed
@@ -385,39 +392,46 @@ public class PizzaView extends javax.swing.JFrame {
     }//GEN-LAST:event_pesquisarButtonActionPerformed
 
     private void novoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoButtonActionPerformed
-        inserir(nomeTF.getText(), (String) medidaCB.getSelectedItem(), fornecedorCB.getSelectedIndex());
-        listar();
+
+        inserir(nomeTF.getText(), descTF.getText());
         nomeTF.setText("");
-        medidaCB.setSelectedIndex(0);
-        fornecedorCB.setSelectedIndex(0);
+        descTF.setText("");
+        fillPizzaTable();
+
     }//GEN-LAST:event_novoButtonActionPerformed
 
     private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
-        DefaultTableModel model = (DefaultTableModel) ingredienteTable.getModel();
+        DefaultTableModel modelPizza = (DefaultTableModel) PizzaTable.getModel();
 
-        nomeTF.setText((String) model.getValueAt(ingredienteTable.getSelectedRow(), 1));
-        medidaCB.setSelectedItem((String) model.getValueAt(ingredienteTable.getSelectedRow(), 2));
-        fornecedorCB.setSelectedItem((String) model.getValueAt(ingredienteTable.getSelectedRow(), 3));
+        nomeTF.setText((String) modelPizza.getValueAt(ingredienteInsertTable.getSelectedRow(), 1));
+        descTF.setText((String) modelPizza.getValueAt(ingredienteInsertTable.getSelectedRow(), 2));
 
-        selectedIngrediente.setId((Integer) model.getValueAt(ingredienteTable.getSelectedRow(), 0));
+        fillIngredienteInsertTable();
     }//GEN-LAST:event_editarButtonActionPerformed
 
     private void disposeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disposeButtonActionPerformed
         erroDialog.dispose();
     }//GEN-LAST:event_disposeButtonActionPerformed
 
-    private void cancelarButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelarButton1ActionPerformed
+    private void removeIngredienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeIngredienteButtonActionPerformed
+        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
 
-    private void cancelarButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelarButton2ActionPerformed
+        model.removeRow(ingredienteInsertTable.getSelectedRow());
+    }//GEN-LAST:event_removeIngredienteButtonActionPerformed
+
+    private void addIngredienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIngredienteButtonActionPerformed
+        fillIngredienteTable();
+    }//GEN-LAST:event_addIngredienteButtonActionPerformed
+
+    private void PizzaTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PizzaTableMouseClicked
+        fillIngredienteViewTable();
+    }//GEN-LAST:event_PizzaTableMouseClicked
 
     IngredienteBEAN selectedIngrediente = new IngredienteBEAN();
 
     static Control controle = new Control();
     ArrayList<IngredienteBEAN> listaIngrediente = new ArrayList<IngredienteBEAN>();
+    ArrayList<PizzaBEAN> listaPizza = new ArrayList<PizzaBEAN>();
 
     public static Date convert_StringToDate(String dataStr) {
         java.sql.Date data = null;
@@ -431,17 +445,85 @@ public class PizzaView extends javax.swing.JFrame {
         return data;
     }
 
+    private void fillIngredienteViewTable() {
+        DefaultTableModel modelPizza = (DefaultTableModel) PizzaTable.getModel();
+        DefaultTableModel modelIngrediente = (DefaultTableModel) ingredienteViewTable.getModel();
+
+        PizzaBEAN selectedPizza = new PizzaBEAN((Integer) modelPizza.getValueAt(PizzaTable.getSelectedRow(), 0));
+
+        ArrayList<IngredienteBEAN> _listaIngrediente = controle.listIngredientePizza(selectedPizza);
+
+        for (IngredienteBEAN ingrediente : _listaIngrediente) {
+            modelIngrediente.addRow(new Object[]{
+                ingrediente.getId(),
+                ingrediente.getNome()
+            });
+        }
+
+    }
+
+    private void fillIngredienteInsertTable() {
+        DefaultTableModel modelInsertIngrediente = (DefaultTableModel) ingredienteInsertTable.getModel();
+        DefaultTableModel modelViewIngrediente = (DefaultTableModel) ingredienteViewTable.getModel();
+
+        for (int i = 0; i < modelViewIngrediente.getRowCount(); i++) {
+            modelInsertIngrediente.addRow(new Object[]{
+                modelViewIngrediente.getValueAt(i, 0)
+            });
+        }
+    }
+
+    private void fillIngredienteTable() {
+        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
+
+        if (ingredienteCB.getSelectedIndex() != 0) {
+            model.addRow(new Object[]{
+                listaIngrediente.get(ingredienteCB.getSelectedIndex() - 1).getId(),
+                listaIngrediente.get(ingredienteCB.getSelectedIndex() - 1).getNome()
+            });
+        }
+
+    }
+
+    private void fillPizzaTable() {
+
+        DefaultTableModel model = (DefaultTableModel) PizzaTable.getModel();
+
+        listaPizza = controle.listaPizza();
+
+        for (PizzaBEAN pizza : listaPizza) {
+
+            boolean ativo = false;
+
+            if (pizza.getStatus() == 1) {
+                ativo = true;
+            }
+
+            model.addRow(new Object[]{
+                pizza.getId(),
+                pizza.getNome(),
+                pizza.getDetalhes(),
+                ativo
+            });
+        }
+    }
+
     private void fillIngredienteCB() {
         listaIngrediente = controle.listaIngrediente();
+
+        for (IngredienteBEAN ingrediente : listaIngrediente) {
+            ingredienteCB.addItem(ingrediente.getNome());
+        }
+
     }
 
     private void pesquisar(String str, boolean cbAtivo) {
 
-        DefaultTableModel model = (DefaultTableModel) ingredienteTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
         model.setRowCount(0);
 
         if (str.equals("")) {
-            listar();
+
         }
 
         List<IngredienteBEAN> listaIngrediente = controle.listaIngrediente();
@@ -480,88 +562,46 @@ public class PizzaView extends javax.swing.JFrame {
         }
     }
 
-    private void listar() {
+    private void inserir(String nome, String desc) {
 
-        DefaultTableModel model = (DefaultTableModel) ingredienteTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
 
-        model.setRowCount(0);
+        ArrayList<IngredienteBEAN> _ingredienteList = new ArrayList<IngredienteBEAN>();
 
-        List<IngredienteBEAN> listIngrediente = controle.listaIngrediente();
-        List<FornecedorBEAN> listFornecedor = controle.listaFornecedor();
-
-        for (IngredienteBEAN ingrediente : listIngrediente) {
-
-            boolean ativo = false;
-
-            if (ingrediente.getStatus() == 1) {
-                ativo = true;
-            }
-
-            model.addRow(new Object[]{
-                ingrediente.getId(),
-                ingrediente.getNome(),
-                ingrediente.getMedida(),
-                controle.findFornecedor(ingrediente.getId_fornecedor()).getRazaoSocial(),
-                ativo
-            });
-
+        for (int i = 0; i < model.getRowCount(); i++) {
+            _ingredienteList.add(new IngredienteBEAN((Integer) model.getValueAt(i, 0)));
         }
-    }
 
-    private void inserir(String nome, String medida, int indexFornecedor) {
-
-        if (indexFornecedor != 0 && !medida.equals("<selecione>")) {
-            FornecedorBEAN fornecedor = listaFornecedor.get(indexFornecedor);
-
-            IngredienteBEAN ingrediente = new IngredienteBEAN(nome, medida, fornecedor.getId(), 1);
-
-            List<IngredienteBEAN> listIngrediente = controle.listaIngrediente();
-
-            boolean exist = false;
-
-            for (IngredienteBEAN _ingrediente : listIngrediente) {
-                if (ingrediente.getNome() == _ingrediente.getNome()
-                        && ingrediente.getId_fornecedor() == _ingrediente.getId_fornecedor()) {
-                    exist = true;
-                }
-            }
-
-            if (!exist) {
-                controle.addIngrediente(ingrediente);
-            }
-
-        } else {
-            erroDialog.setVisible(true);
-        }
+        controle.addPizza(new PizzaBEAN(nome, desc, 1), _ingredienteList);
 
     }
 
     private static void desativarAtivar(int id, boolean status) {
 
-        IngredienteBEAN ingrediente = controle.findIngrediente(id);
+        PizzaBEAN pizza = controle.findPizza(id);
 
         if (status == false) {
-            ingrediente.setStatus(1);
+            pizza.setStatus(1);
         } else {
-            ingrediente.setStatus(0);
+            pizza.setStatus(0);
 
         }
 
-        controle.updateIngrediente(ingrediente);
+        controle.updatePizza(pizza);
 
     }
 
-    private void alterar(int id, String nome, String medida, int indexFornecedor) {
+    private void alterar(String nome, String desc) {
 
-        if (indexFornecedor != 0 && !medida.equals("<selecione>")) {
-            FornecedorBEAN fornecedor = listaFornecedor.get(indexFornecedor);
+        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
 
-            IngredienteBEAN ingrediente = new IngredienteBEAN(id, nome, medida, 1, fornecedor.getId());
+        ArrayList<IngredienteBEAN> _ingredienteList = new ArrayList<IngredienteBEAN>();
 
-            controle.updateIngrediente(ingrediente);
-        } else {
-            erroDialog.setVisible(true);
+        for (int i = 0; i < model.getRowCount(); i++) {
+            _ingredienteList.add(new IngredienteBEAN((String) model.getValueAt(i, 0)));
         }
+
+        controle.updatePizza(new PizzaBEAN(nome, desc, 1), _ingredienteList);
 
     }
 
@@ -594,19 +634,19 @@ public class PizzaView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable PizzaTable;
+    private javax.swing.JButton addIngredienteButton;
     private javax.swing.JCheckBox ativosCK;
     private javax.swing.JButton cancelarButton;
-    private javax.swing.JButton cancelarButton1;
-    private javax.swing.JButton cancelarButton2;
     private javax.swing.JButton desativarButton;
+    private javax.swing.JTextField descTF;
     private javax.swing.JButton disposeButton;
     private javax.swing.JButton editarButton;
     private javax.swing.JDialog erroDialog;
-    private javax.swing.JTable ingredienteTable;
+    private javax.swing.JComboBox<String> ingredienteCB;
+    private javax.swing.JTable ingredienteInsertTable;
     private javax.swing.JTable ingredienteTable1;
-    private javax.swing.JTable ingredienteTable2;
-    private javax.swing.JTable ingredienteTable3;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTable ingredienteViewTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JScrollPane jScrollPane1;
@@ -615,10 +655,10 @@ public class PizzaView extends javax.swing.JFrame {
     private javax.swing.JLabel nomeLabel;
     private javax.swing.JLabel nomeLabel1;
     private javax.swing.JTextField nomeTF;
-    private javax.swing.JTextField nomeTF1;
     private javax.swing.JButton novoButton;
     private javax.swing.JButton pesquisarButton;
     private javax.swing.JTextField pesquisarTF;
+    private javax.swing.JButton removeIngredienteButton;
     private javax.swing.JButton salvarButton;
     // End of variables declaration//GEN-END:variables
 }
