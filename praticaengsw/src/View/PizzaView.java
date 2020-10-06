@@ -10,6 +10,9 @@ import Control.Control;
 import Model.FornecedorBEAN;
 import Model.IngredienteBEAN;
 import Model.PizzaBEAN;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 public class PizzaView extends javax.swing.JFrame {
@@ -580,7 +583,11 @@ public class PizzaView extends javax.swing.JFrame {
             _ingredienteList.add(new IngredienteBEAN((Integer) model.getValueAt(i, 0)));
         }
 
-        controle.addPizza(new PizzaBEAN(nome, desc, 1), _ingredienteList);
+        try {
+            controle.addPizza(new PizzaBEAN(nome, desc, 1), _ingredienteList);
+        } catch (SQLException ex) {
+            Logger.getLogger(PizzaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

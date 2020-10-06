@@ -9,6 +9,7 @@ import Model.IngredienteBEAN;
 import Model.IngredienteDAO;
 import Model.PizzaBEAN;
 import Model.PizzaDAO;
+import java.sql.SQLException;
 
 public class Control {
 
@@ -76,7 +77,7 @@ public class Control {
         return PizzaDAO.getInstance().listIngredientePizza(pizza);
     }
 
-    public void addPizza(PizzaBEAN pizza, ArrayList<IngredienteBEAN> ingredienteList) {
+    public void addPizza(PizzaBEAN pizza, ArrayList<IngredienteBEAN> ingredienteList) throws SQLException {
         System.out.println("Teste1");
         PizzaDAO.getInstance().create(pizza, ingredienteList);
     }
