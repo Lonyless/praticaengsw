@@ -20,22 +20,31 @@ public class PizzaDAO {
         return instance;
     }
 
-    public long create(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
-
+    public void insertAuxiliar(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
         String query = "INSERT INTO aux_pizza_ingrediente (id_pizza,id_ingrediente) VALUES (?,?)";
 
         for (IngredienteBEAN ingrediente : ingredienteList) {
             MySQLDAO.executeQuery(query, pizza.getId(), ingrediente.getId());
         }
+    }
 
-        query = "INSERT INTO pizza (nome,detalhes,status) VALUES (?,?,?)";
+    public long create(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
+
+        insertAuxiliar(pizza, ingredienteList);
+
+        String query = "INSERT INTO pizza (nome,detalhes,status) VALUES (?,?,?)";
 
         return MySQLDAO.executeQuery(query, pizza.getNome(), pizza.getDetalhes(), pizza.getStatus());
     }
 
     public void update(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
 
-        String query = "UPDATE pizza SET nome=?, detalhes=?, status=? WHERE id = ?";
+        String query = "delete from aux_pizza_ingrediente where id_pizza=?";
+        MySQLDAO.executeQuery(query, pizza.getId());
+
+        insertAuxiliar(pizza, ingredienteList);
+
+        query = "UPDATE pizza SET nome=?, detalhes=?, status=? WHERE id = ?";
         MySQLDAO.executeQuery(query, pizza.getNome(), pizza.getDetalhes(), pizza.getStatus(), pizza.getId());
     }
 
@@ -63,7 +72,7 @@ public class PizzaDAO {
     }
 
     public void delete(PizzaBEAN pizza) {
-        MySQLDAO.executeQuery("DELETE FROM ingrediente WHERE id = ?", pizza.getId());
+        MySQLDAO.executeQuery("DELETE FROM pizza WHERE id = ?", pizza.getId());
     }
 
     public ArrayList<PizzaBEAN> findAllPizza() {
@@ -77,8 +86,8 @@ public class PizzaDAO {
         try {
             while (rs.next()) {
                 lista.add(new PizzaBEAN(
-                        rs.getInt("id"), rs.getString("nome"), rs.getString("medida"),
-                        rs.getInt("id_fornecedor"), rs.getInt("status")));
+                        rs.getInt("id"), rs.getString("nome"), rs.getString("detalhes"),
+                        rs.getInt("status")));
             }
             rs.close();
         } catch (SQLException e) {
@@ -90,12 +99,12 @@ public class PizzaDAO {
     public PizzaBEAN findPizza(int id) {
         PizzaBEAN result = null;
         ResultSet rs = null;
-        rs = MySQLDAO.getResultSet("SELECT * FROM ingrediente WHERE id=?", id);
+        rs = MySQLDAO.getResultSet("SELECT * FROM pizza WHERE id=?", id);
         try {
             if (rs.next()) {
                 result = new PizzaBEAN(rs.getInt("id"),
-                        rs.getString("nome"), rs.getString("medida"),
-                        rs.getInt("id_fornecedor"), rs.getInt("status"));
+                        rs.getString("nome"), rs.getString("detalhes"),
+                        rs.getInt("status"));
             }
             rs.close();
         } catch (SQLException e) {
@@ -108,7 +117,7 @@ public class PizzaDAO {
         int result = 0;
         ResultSet rs = null;
         rs = MySQLDAO.getResultSet(
-                "SELECT * FROM fornecedor WHERE nome = ? and id_fornecedor = ?", ingrediente.getNome(), ingrediente.getId_fornecedor());
+                "SELECT * FROM pizza WHERE nome = ? and detalhes = ?", pizza.getNome(), pizza.getDetalhes());
         try {
             if (rs.next()) {
                 result = rs.getInt("id");
@@ -124,7 +133,7 @@ public class PizzaDAO {
     public Boolean isExist(int id) {
         Boolean result = false;
         ResultSet rs = null;
-        rs = MySQLDAO.getResultSet("SELECT * FROM ingrediente WHERE id= ?", id);
+        rs = MySQLDAO.getResultSet("SELECT * FROM pizza WHERE id= ?", id);
         try {
             if (rs.next()) {
                 result = true;
