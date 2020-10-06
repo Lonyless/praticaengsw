@@ -23,7 +23,7 @@ public class PizzaDAO {
     public void insertAuxiliar(List<IngredienteBEAN> ingredienteList) throws SQLException {
         System.out.println("4");
         List<PizzaBEAN> listPizza = findAllPizza();
-        
+
         int id = 0;
         System.out.println("5");
         for (PizzaBEAN pizza : listPizza) {
@@ -47,12 +47,12 @@ public class PizzaDAO {
         }
     }
 
-    public long create(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) throws SQLException {
-        System.out.println("Teste2");
-        insertAuxiliar(ingredienteList);
+    public void create(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) throws SQLException {
 
         String query = "INSERT INTO pizza (nome,detalhes,status) VALUES (?,?,?)";
-        return MySQLDAO.executeQuery(query, pizza.getNome(), pizza.getDetalhes(), pizza.getStatus());
+        MySQLDAO.executeQuery(query, pizza.getNome(), pizza.getDetalhes(), pizza.getStatus());
+        
+        insertAuxiliar(ingredienteList);
     }
 
     public void update(PizzaBEAN pizza, List<IngredienteBEAN> ingredienteList) {
