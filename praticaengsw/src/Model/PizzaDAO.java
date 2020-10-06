@@ -40,12 +40,12 @@ public class PizzaDAO {
     }
 
     public ArrayList<IngredienteBEAN> listIngredientePizza(PizzaBEAN pizza) {
-        
-        //select id_ingrediente from aux_pizza_ingrediente join ingrediente on ingrediente.id = aux_pizza_ingrediente.id_ingrediente;
-        
+
         ArrayList<IngredienteBEAN> lista = new ArrayList<IngredienteBEAN>();
         ResultSet rs = null;
-        rs = MySQLDAO.getResultSet("SELECT * FROM ");
+        rs = MySQLDAO.getResultSet("select * from ingrediente"
+                + " join aux_pizza_ingrediente on aux_pizza_ingrediente.id_ingrediente = ingrediente.id"
+                + " and aux_pizza_ingrediente.id_pizza=?", pizza.getId());
 
         try {
             while (rs.next()) {
@@ -57,10 +57,9 @@ public class PizzaDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
-        rs = MySQLDAO.getResultSet("SELECT * FROM aux_pizza_ingrediente");
-        
-        
+
+        return lista;
+
     }
 
     public void delete(PizzaBEAN pizza) {
