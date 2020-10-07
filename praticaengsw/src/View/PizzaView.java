@@ -452,7 +452,6 @@ public class PizzaView extends javax.swing.JFrame {
         DefaultTableModel modelPizza = (DefaultTableModel) PizzaTable.getModel();
         DefaultTableModel modelIngrediente = (DefaultTableModel) ingredienteViewTable.getModel();
 
-        modelPizza.setRowCount(0);
         modelIngrediente.setRowCount(0);
 
         PizzaBEAN selectedPizza = new PizzaBEAN((Integer) modelPizza.getValueAt(PizzaTable.getSelectedRow(), 0));

@@ -78,7 +78,6 @@ public class Control {
     }
 
     public void addPizza(PizzaBEAN pizza, ArrayList<IngredienteBEAN> ingredienteList) throws SQLException {
-        System.out.println("Teste1");
         PizzaDAO.getInstance().create(pizza, ingredienteList);
     }
 
