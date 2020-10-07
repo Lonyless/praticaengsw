@@ -22,7 +22,6 @@ public class PizzaDAO {
 
     public void insertAuxiliar(List<IngredienteBEAN> ingredienteList) throws SQLException {
         
-        System.out.println("teste");
         
         List<PizzaBEAN> listPizza = findAllPizza();
 
