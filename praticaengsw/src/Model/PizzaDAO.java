@@ -21,16 +21,13 @@ public class PizzaDAO {
     }
 
     public void insertAuxiliar(List<IngredienteBEAN> ingredienteList) throws SQLException {
-        
-        
+
         List<PizzaBEAN> listPizza = findAllPizza();
 
         int id = 0;
         for (PizzaBEAN pizza : listPizza) {
             id = pizza.getId();
         }
-
-        
 
         String query = "INSERT INTO aux_pizza_ingrediente (id_pizza,id_ingrediente) VALUES (?,?)";
         for (IngredienteBEAN ingrediente : ingredienteList) {

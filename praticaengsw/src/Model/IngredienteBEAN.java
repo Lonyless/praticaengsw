@@ -24,6 +24,11 @@ public class IngredienteBEAN {
         this.status = 1;
     }
 
+    public IngredienteBEAN(String nome, int id) {
+        this.nome = nome;
+        this.id = id;
+    }
+
     public IngredienteBEAN(String nome) {
         this.nome = nome;
     }

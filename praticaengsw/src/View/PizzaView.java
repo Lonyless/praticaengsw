@@ -383,9 +383,9 @@ public class PizzaView extends javax.swing.JFrame {
     }//GEN-LAST:event_salvarButtonActionPerformed
 
     private void desativarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desativarButtonActionPerformed
-        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) PizzaTable.getModel();
 
-        desativarAtivar((Integer) model.getValueAt(ingredienteInsertTable.getSelectedRow(), 0), (Boolean) model.getValueAt(ingredienteInsertTable.getSelectedRow(), 4));
+        desativarAtivar((Integer) model.getValueAt(PizzaTable.getSelectedRow(), 0), (Boolean) model.getValueAt(PizzaTable.getSelectedRow(), 3));
 
         fillPizzaTable();
     }//GEN-LAST:event_desativarButtonActionPerformed
@@ -406,8 +406,8 @@ public class PizzaView extends javax.swing.JFrame {
     private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
         DefaultTableModel modelPizza = (DefaultTableModel) PizzaTable.getModel();
 
-        nomeTF.setText((String) modelPizza.getValueAt(ingredienteInsertTable.getSelectedRow(), 1));
-        descTF.setText((String) modelPizza.getValueAt(ingredienteInsertTable.getSelectedRow(), 2));
+        nomeTF.setText((String) modelPizza.getValueAt(PizzaTable.getSelectedRow(), 1));
+        descTF.setText((String) modelPizza.getValueAt(PizzaTable.getSelectedRow(), 2));
 
         fillIngredienteInsertTable();
     }//GEN-LAST:event_editarButtonActionPerformed
@@ -472,18 +472,21 @@ public class PizzaView extends javax.swing.JFrame {
         DefaultTableModel modelViewIngrediente = (DefaultTableModel) ingredienteViewTable.getModel();
 
         modelInsertIngrediente.setRowCount(0);
-        modelViewIngrediente.setRowCount(0);
 
         for (int i = 0; i < modelViewIngrediente.getRowCount(); i++) {
             modelInsertIngrediente.addRow(new Object[]{
-                modelViewIngrediente.getValueAt(i, 0)
+                modelViewIngrediente.getValueAt(i, 0),
+                modelViewIngrediente.getValueAt(i, 1)
             });
         }
+
+        modelViewIngrediente.setRowCount(0);
+
     }
 
     private void fillIngredienteTable() {
         DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
-                
+
         if (ingredienteCB.getSelectedIndex() != 0) {
             model.addRow(new Object[]{
                 listaIngrediente.get(ingredienteCB.getSelectedIndex() - 1).getId(),
@@ -497,8 +500,8 @@ public class PizzaView extends javax.swing.JFrame {
 
         DefaultTableModel model = (DefaultTableModel) PizzaTable.getModel();
 
-        model.setRowCount(0);    
-        
+        model.setRowCount(0);
+
         listaPizza = controle.listaPizza();
 
         for (PizzaBEAN pizza : listaPizza) {
@@ -612,7 +615,7 @@ public class PizzaView extends javax.swing.JFrame {
         ArrayList<IngredienteBEAN> _ingredienteList = new ArrayList<IngredienteBEAN>();
 
         for (int i = 0; i < model.getRowCount(); i++) {
-            _ingredienteList.add(new IngredienteBEAN((String) model.getValueAt(i, 0)));
+            _ingredienteList.add(new IngredienteBEAN((String) model.getValueAt(i, 1), (Integer) model.getValueAt(i, 0)));
         }
 
         controle.updatePizza(new PizzaBEAN(nome, desc, 1), _ingredienteList);

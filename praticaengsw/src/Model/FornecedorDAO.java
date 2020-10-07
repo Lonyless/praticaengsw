@@ -80,7 +80,7 @@ public class FornecedorDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-       
+
         return result;
     }
 

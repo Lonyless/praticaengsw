@@ -17,7 +17,7 @@ public class IngredienteView extends javax.swing.JFrame {
         initComponents();
         listar();
         fillFornecedorCB();
-        
+
         this.setLocationRelativeTo(null);
     }
 
