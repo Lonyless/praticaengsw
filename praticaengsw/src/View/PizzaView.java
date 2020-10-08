@@ -532,42 +532,40 @@ public class PizzaView extends javax.swing.JFrame {
 
     private void pesquisar(String str, boolean cbAtivo) {
 
-        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) PizzaTable.getModel();
         model.setRowCount(0);
 
         if (str.equals("")) {
-
+            fillPizzaTable();
         }
 
-        List<IngredienteBEAN> listaIngrediente = controle.listaIngrediente();
+        List<PizzaBEAN> listaPizza = controle.listaPizza();
 
-        for (IngredienteBEAN ingrediente : listaIngrediente) {
+        for (PizzaBEAN pizza : listaPizza) {
 
             boolean ativo;
 
-            if (ingrediente.getStatus() == 1) {
+            if (pizza.getStatus() == 1) {
                 ativo = true;
             } else {
                 ativo = false;
             }
 
-            if (ingrediente.getNome().equals(str)) {
+            if (pizza.getNome().equals(str)) {
                 if (cbAtivo == true) {
-                    if (ingrediente.getStatus() == 1) {
+                    if (pizza.getStatus() == 1) {
                         model.addRow(new Object[]{
-                            ingrediente.getId(),
-                            ingrediente.getNome(),
-                            ingrediente.getMedida(),
-                            ingrediente.getId_fornecedor(),
+                            pizza.getId(),
+                            pizza.getNome(),
+                            pizza.getDetalhes(),
                             ativo
                         });
                     }
                 } else {
                     model.addRow(new Object[]{
-                        ingrediente.getId(),
-                        ingrediente.getNome(),
-                        ingrediente.getMedida(),
-                        ingrediente.getId_fornecedor(),
+                        pizza.getId(),
+                        pizza.getNome(),
+                        pizza.getDetalhes(),
                         ativo
                     });
                 }
