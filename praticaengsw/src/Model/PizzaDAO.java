@@ -55,9 +55,11 @@ public class PizzaDAO {
 
         String query = "delete from aux_pizza_ingrediente where id_pizza=?";
         MySQLDAO.executeQuery(query, pizza.getId());
-
+        
+        
         updateAuxiliar(pizza, ingredienteList);
-
+        System.out.println("auxiliar working");
+        
         query = "UPDATE pizza SET nome=?, detalhes=?, status=? WHERE id = ?";
         MySQLDAO.executeQuery(query, pizza.getNome(), pizza.getDetalhes(), pizza.getStatus(), pizza.getId());
     }

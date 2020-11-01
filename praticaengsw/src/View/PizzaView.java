@@ -176,6 +176,11 @@ public class PizzaView extends javax.swing.JFrame {
 
         cancelarButton.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         cancelarButton.setText("Cancelar");
+        cancelarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarButtonActionPerformed(evt);
+            }
+        });
 
         nomeTF.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
 
@@ -375,11 +380,13 @@ public class PizzaView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void salvarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarButtonActionPerformed
-
-        alterar(nomeTF.getText(), descTF.getText());
+        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
+        alterar(nomeTF.getText(), descTF.getText(), this._editingId);
         nomeTF.setText("");
         descTF.setText("");
 
+        model.setRowCount(0);
+        fillPizzaTable();
     }//GEN-LAST:event_salvarButtonActionPerformed
 
     private void desativarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desativarButtonActionPerformed
@@ -396,16 +403,19 @@ public class PizzaView extends javax.swing.JFrame {
 
     private void novoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoButtonActionPerformed
 
+        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
         inserir(nomeTF.getText(), descTF.getText());
         nomeTF.setText("");
         descTF.setText("");
         fillPizzaTable();
+        model.setRowCount(0);
 
     }//GEN-LAST:event_novoButtonActionPerformed
 
     private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
         DefaultTableModel modelPizza = (DefaultTableModel) PizzaTable.getModel();
 
+        this._editingId = (Integer) modelPizza.getValueAt(PizzaTable.getSelectedRow(), 0);
         nomeTF.setText((String) modelPizza.getValueAt(PizzaTable.getSelectedRow(), 1));
         descTF.setText((String) modelPizza.getValueAt(PizzaTable.getSelectedRow(), 2));
 
@@ -430,7 +440,16 @@ public class PizzaView extends javax.swing.JFrame {
         fillIngredienteViewTable();
     }//GEN-LAST:event_PizzaTableMouseClicked
 
+    private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
+        DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
+        nomeTF.setText("");
+        descTF.setText("");
+        fillPizzaTable();
+        model.setRowCount(0);
+    }//GEN-LAST:event_cancelarButtonActionPerformed
+
     IngredienteBEAN selectedIngrediente = new IngredienteBEAN();
+    int _editingId;
 
     static Control controle = new Control();
     ArrayList<IngredienteBEAN> listaIngrediente = new ArrayList<IngredienteBEAN>();
@@ -606,7 +625,7 @@ public class PizzaView extends javax.swing.JFrame {
 
     }
 
-    private void alterar(String nome, String desc) {
+    private void alterar(String nome, String desc, int id) {
 
         DefaultTableModel model = (DefaultTableModel) ingredienteInsertTable.getModel();
 
@@ -616,8 +635,8 @@ public class PizzaView extends javax.swing.JFrame {
             _ingredienteList.add(new IngredienteBEAN((String) model.getValueAt(i, 1), (Integer) model.getValueAt(i, 0)));
         }
 
-        controle.updatePizza(new PizzaBEAN(nome, desc, 1), _ingredienteList);
-
+        controle.updatePizza(new PizzaBEAN(id, nome, desc, 1), _ingredienteList);
+        System.out.println("chamada");
     }
 
     public static void main(String args[]) {
