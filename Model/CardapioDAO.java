@@ -31,7 +31,7 @@ public class CardapioDAO {
 
         String query = "INSERT INTO aux_pizza_cardapio (id_pizza,id_cardapio) VALUES (?,?)";
         for (PizzaBEAN pizza : pizzaList) {
-            MySQLDAO.executeQuery(query, id, pizza.getId());
+            MySQLDAO.executeQuery(query, pizza.getId(), id);
         }
     }
 
@@ -71,12 +71,13 @@ public class CardapioDAO {
 
         ArrayList<PizzaBEAN> lista = new ArrayList<PizzaBEAN>();
         ResultSet rs = null;
-        rs = MySQLDAO.getResultSet("select * from ingrediente"
-                + " join aux_pizza_ingrediente on aux_pizza_ingrediente.id_ingrediente = ingrediente.id"
-                + " and aux_pizza_ingrediente.id_pizza=?", cardapio.getId());
+        rs = MySQLDAO.getResultSet("select * from pizza"
+                + " join aux_pizza_cardapio on aux_pizza_cardapio.id_pizza = pizza.id"
+                + " and aux_pizza_cardapio.id_cardapio=?", cardapio.getId());
 
         try {
             while (rs.next()) {
+   
                 lista.add(new PizzaBEAN(
                         rs.getInt("id"), rs.getString("nome"), rs.getString("detalhes"),
                         rs.getInt("status")));
