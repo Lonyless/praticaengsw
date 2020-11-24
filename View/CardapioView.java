@@ -17,16 +17,17 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 public class CardapioView extends javax.swing.JFrame {
-    
+
     public CardapioView() {
         initComponents();
-        
+
+        salvarButton.setEnabled(false);
         fillPizzaCB();
         fillCardapioTable();
-        
+
         this.setLocationRelativeTo(null);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -264,6 +265,7 @@ public class CardapioView extends javax.swing.JFrame {
         pesquisarTF.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
 
         ativosCK.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        ativosCK.setSelected(true);
         ativosCK.setText("Ativos");
 
         editarButton.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
@@ -381,20 +383,22 @@ public class CardapioView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void salvarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarButtonActionPerformed
-        
+
         DefaultTableModel model = (DefaultTableModel) CardapioTable.getModel();
-        
+
         alterar(nomeTF.getText(), descTF.getText(), (Integer) model.getValueAt(CardapioTable.getSelectedRow(), 0));
         nomeTF.setText("");
         descTF.setText("");
+        novoButton.setEnabled(true);
+        salvarButton.setEnabled(false);
 
     }//GEN-LAST:event_salvarButtonActionPerformed
 
     private void desativarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desativarButtonActionPerformed
         DefaultTableModel model = (DefaultTableModel) CardapioTable.getModel();
-        
+
         desativarAtivar((Integer) model.getValueAt(CardapioTable.getSelectedRow(), 0), (Boolean) model.getValueAt(CardapioTable.getSelectedRow(), 3));
-        
+
         fillCardapioTable();
     }//GEN-LAST:event_desativarButtonActionPerformed
 
@@ -403,7 +407,7 @@ public class CardapioView extends javax.swing.JFrame {
     }//GEN-LAST:event_pesquisarButtonActionPerformed
 
     private void novoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoButtonActionPerformed
-        
+
         inserir(nomeTF.getText(), descTF.getText());
         nomeTF.setText("");
         descTF.setText("");
@@ -413,10 +417,12 @@ public class CardapioView extends javax.swing.JFrame {
 
     private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
         DefaultTableModel modelPizza = (DefaultTableModel) CardapioTable.getModel();
-        
+
+        salvarButton.setEnabled(true);
+        novoButton.setEnabled(false);
         nomeTF.setText((String) modelPizza.getValueAt(CardapioTable.getSelectedRow(), 1));
         descTF.setText((String) modelPizza.getValueAt(CardapioTable.getSelectedRow(), 2));
-        
+
         fillPizzaInsertTable();
     }//GEN-LAST:event_editarButtonActionPerformed
 
@@ -426,7 +432,7 @@ public class CardapioView extends javax.swing.JFrame {
 
     private void removeIngredienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeIngredienteButtonActionPerformed
         DefaultTableModel model = (DefaultTableModel) pizzaInsertTable.getModel();
-        
+
         model.removeRow(pizzaInsertTable.getSelectedRow());
     }//GEN-LAST:event_removeIngredienteButtonActionPerformed
 
@@ -441,116 +447,128 @@ public class CardapioView extends javax.swing.JFrame {
     private void pizzaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pizzaCBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pizzaCBActionPerformed
-    
+
     CardapioBEAN selectedCardapio = new CardapioBEAN();
-    
+
     static Control controle = new Control();
     ArrayList<PizzaBEAN> listaPizza = new ArrayList<PizzaBEAN>();
     ArrayList<CardapioBEAN> listaCardapio = new ArrayList<CardapioBEAN>();
-    
+
     private void fillPizzaViewTable() {
         DefaultTableModel modelCardapio = (DefaultTableModel) CardapioTable.getModel();
         DefaultTableModel modelPizza = (DefaultTableModel) pizzaViewTable.getModel();
-        
+
         modelPizza.setRowCount(0);
-        
+
         CardapioBEAN selectedCardapio = new CardapioBEAN((Integer) modelCardapio.getValueAt(CardapioTable.getSelectedRow(), 0));
-        
+
         ArrayList<PizzaBEAN> _listaPizza = controle.listCardapioPizza(selectedCardapio);
-        
+
         for (PizzaBEAN pizza : _listaPizza) {
             modelPizza.addRow(new Object[]{
                 pizza.getId(),
                 pizza.getNome()
             });
         }
-        
+
     }
-    
+
     private void fillPizzaInsertTable() {
         DefaultTableModel modelInsertPizza = (DefaultTableModel) pizzaInsertTable.getModel();
         DefaultTableModel modelViewPizza = (DefaultTableModel) pizzaViewTable.getModel();
-        
+
         modelInsertPizza.setRowCount(0);
-        
+
         for (int i = 0; i < modelViewPizza.getRowCount(); i++) {
             modelInsertPizza.addRow(new Object[]{
                 modelViewPizza.getValueAt(i, 0),
                 modelViewPizza.getValueAt(i, 1)
             });
         }
-        
+
         modelViewPizza.setRowCount(0);
-        
+
     }
-    
+
     private void fillPizzaTable() {
         DefaultTableModel model = (DefaultTableModel) pizzaInsertTable.getModel();
-        
+
         if (pizzaCB.getSelectedIndex() != 0) {
             model.addRow(new Object[]{
                 listaPizza.get(pizzaCB.getSelectedIndex() - 1).getId(),
                 listaPizza.get(pizzaCB.getSelectedIndex() - 1).getNome()
             });
         }
-        
+
     }
-    
+
     private void fillCardapioTable() {
-        
+
         DefaultTableModel model = (DefaultTableModel) CardapioTable.getModel();
-        
+
         model.setRowCount(0);
-        
+
         listaCardapio = controle.listaCardapio();
-        
+
         for (CardapioBEAN cardapio : listaCardapio) {
-            
+
             boolean ativo = false;
-            
+
             if (cardapio.getStatus() == 1) {
                 ativo = true;
             }
-            
-            model.addRow(new Object[]{
-                cardapio.getId(),
-                cardapio.getNome(),
-                cardapio.getDetalhes(),
-                ativo
-            });
+
+            if (ativosCK.isSelected()) {
+                if (ativo == true) {
+                    model.addRow(new Object[]{
+                        cardapio.getId(),
+                        cardapio.getNome(),
+                        cardapio.getDetalhes(),
+                        ativo
+                    });
+                }
+            } else {
+                model.addRow(new Object[]{
+                    cardapio.getId(),
+                    cardapio.getNome(),
+                    cardapio.getDetalhes(),
+                    ativo
+                });
+            }
+
         }
     }
-    
+
     private void fillPizzaCB() {
         listaPizza = controle.listaPizza();
-        
+
         for (PizzaBEAN pizza : listaPizza) {
             pizzaCB.addItem(pizza.getNome());
         }
-        
+
     }
-    
+
     private void pesquisar(String str, boolean cbAtivo) {
-        
+
         DefaultTableModel model = (DefaultTableModel) CardapioTable.getModel();
         model.setRowCount(0);
-        
+
         if (str.equals("")) {
-            fillPizzaTable();
+            fillCardapioTable();
         }
-        
+
         List<CardapioBEAN> listaCardapio = controle.listaCardapio();
-        
+
         for (CardapioBEAN cardapio : listaCardapio) {
-            
+
             boolean ativo;
-            
+
             if (cardapio.getStatus() == 1) {
                 ativo = true;
             } else {
                 ativo = false;
             }
-            
+
             if (cardapio.getNome().equals(str)) {
                 if (cbAtivo == true) {
                     if (cardapio.getStatus() == 1) {
@@ -572,61 +590,61 @@ public class CardapioView extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void inserir(String nome, String desc) {
-        
+
         DefaultTableModel model = (DefaultTableModel) pizzaInsertTable.getModel();
-        
+
         ArrayList<PizzaBEAN> _pizzaList = new ArrayList<PizzaBEAN>();
-        
+
         for (int i = 0; i < model.getRowCount(); i++) {
             _pizzaList.add(new PizzaBEAN((Integer) model.getValueAt(i, 0)));
         }
-        
+
         try {
             controle.addCardapio(new CardapioBEAN(nome, desc, 1), _pizzaList);
         } catch (SQLException ex) {
             Logger.getLogger(CardapioView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         model.setRowCount(0);
     }
-    
+
     private static void desativarAtivar(int id, boolean status) {
-        
+
         CardapioBEAN cardapio = controle.findCardapio(id);
-        
+
         if (status == false) {
             cardapio.setStatus(1);
         } else {
             cardapio.setStatus(0);
-            
+
         }
-        
+
         controle.updateCardapio(cardapio);
-        
+
     }
-    
+
     private void alterar(String nome, String desc, int id) {
-        
+
         DefaultTableModel model = (DefaultTableModel) pizzaInsertTable.getModel();
-        
+
         ArrayList<PizzaBEAN> _pizzaList = new ArrayList<PizzaBEAN>();
-        
+
         for (int i = 0; i < model.getRowCount(); i++) {
             _pizzaList.add(new PizzaBEAN((Integer) model.getValueAt(i, 0), (String) model.getValueAt(i, 1)));
         }
-        
+
         controle.updateCardapio(new CardapioBEAN(id, nome, desc, 1), _pizzaList);
-        
+
         model.setRowCount(0);
         fillCardapioTable();
         //System.out.println(nome+"   "+desc);
         //_pizzaList.forEach(pizza -> System.out.println(pizza.getNome()));
     }
-    
+
     public static void main(String args[]) {
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
