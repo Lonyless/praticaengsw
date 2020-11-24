@@ -450,10 +450,10 @@ public class CardapioView extends javax.swing.JFrame {
         DefaultTableModel modelCardapio = (DefaultTableModel) CardapioTable.getModel();
         DefaultTableModel modelPizza = (DefaultTableModel) pizzaViewTable.getModel();
 
+        CardapioBEAN selectedCardapio = new CardapioBEAN((Integer) modelCardapio.getValueAt(CardapioTable.getSelectedRow(), 0));
+
         modelCardapio.setRowCount(0);
-
-        PizzaBEAN selectedPizza = new PizzaBEAN((Integer) modelPizza.getValueAt(CardapioTable.getSelectedRow(), 0));
-
+        System.out.println(selectedCardapio.getId());
         ArrayList<PizzaBEAN> _listaPizza = controle.listCardapioPizza(selectedCardapio);
 
         for (PizzaBEAN pizza : _listaPizza) {
