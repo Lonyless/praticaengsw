@@ -28,6 +28,8 @@ public class CardapioDAO {
         for (CardapioBEAN cardapio : listCardapio) {
             id = cardapio.getId();
         }
+        
+        System.out.println(id);
 
         String query = "INSERT INTO aux_pizza_cardapio (id_pizza,id_cardapio) VALUES (?,?)";
         for (PizzaBEAN pizza : pizzaList) {
