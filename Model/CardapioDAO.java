@@ -28,8 +28,6 @@ public class CardapioDAO {
         for (CardapioBEAN cardapio : listCardapio) {
             id = cardapio.getId();
         }
-        
-        System.out.println(id);
 
         String query = "INSERT INTO aux_pizza_cardapio (id_pizza,id_cardapio) VALUES (?,?)";
         for (PizzaBEAN pizza : pizzaList) {
@@ -38,10 +36,10 @@ public class CardapioDAO {
     }
 
     public void updateAuxiliar(CardapioBEAN cardapio, List<PizzaBEAN> pizzaList) {
-        String query = "INSERT INTO aux_pizza_ingrediente (id_pizza,id_ingrediente) VALUES (?,?)";
+        String query = "INSERT INTO aux_pizza_cardapio (id_pizza,id_cardapio) VALUES (?,?)";
 
         for (PizzaBEAN pizza : pizzaList) {
-            MySQLDAO.executeQuery(query, cardapio.getId(), pizza.getId());
+            MySQLDAO.executeQuery(query, pizza.getId(), cardapio.getId());
         }
     }
 
@@ -54,10 +52,15 @@ public class CardapioDAO {
     }
 
     public void update(CardapioBEAN cardapio, List<PizzaBEAN> pizzaList) {
-
+            
+        //System.out.println("Nome cardapio: "+cardapio.getNome());
+        //pizzaList.forEach(cnsmr -> System.out.println("pizza: "+cnsmr.getNome()));
+        
         String query = "delete from aux_pizza_cardapio where id_cardapio=?";
         MySQLDAO.executeQuery(query, cardapio.getId());
-
+        
+        //System.out.println("Id cardapio: "+cardapio.getId());
+        
         updateAuxiliar(cardapio, pizzaList);
 
         query = "UPDATE cardapio SET nome=?, detalhes=?, status=? WHERE id = ?";
