@@ -401,8 +401,8 @@ public class IngredienteView extends javax.swing.JFrame {
 
     private void inserir(String nome, String medida, int indexFornecedor) {
 
-        if (indexFornecedor != 0 && !medida.equals("<selecione>") && !nome.equals("")) {
-            FornecedorBEAN fornecedor = listaFornecedor.get(indexFornecedor-1);
+        if (indexFornecedor != 0 && !medida.equals("<selecione>")) {
+            FornecedorBEAN fornecedor = listaFornecedor.get(indexFornecedor);
 
             IngredienteBEAN ingrediente = new IngredienteBEAN(nome, medida, fornecedor.getId(), 1);
 
@@ -445,9 +445,9 @@ public class IngredienteView extends javax.swing.JFrame {
     private void alterar(int id, String nome, String medida, int indexFornecedor) {
 
         if (indexFornecedor != 0 && !medida.equals("<selecione>")) {
-            FornecedorBEAN fornecedor = listaFornecedor.get(indexFornecedor-1);
+            FornecedorBEAN fornecedor = listaFornecedor.get(indexFornecedor);
 
-            IngredienteBEAN ingrediente = new IngredienteBEAN(id, nome, medida, fornecedor.getId(), 1);
+            IngredienteBEAN ingrediente = new IngredienteBEAN(id, nome, medida, 1, fornecedor.getId());
 
             controle.updateIngrediente(ingrediente);
         } else {

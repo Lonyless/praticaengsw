@@ -25,6 +25,11 @@ public class PizzaBEAN {
         this.id = id;
     }
 
+    public PizzaBEAN(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
     public PizzaBEAN() {
     }
 

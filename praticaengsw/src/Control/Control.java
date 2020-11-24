@@ -1,5 +1,7 @@
 package Control;
 
+import Model.CardapioBEAN;
+import Model.CardapioDAO;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -68,10 +70,10 @@ public class Control {
     public Boolean isExistIngrediente(int id) {
         return IngredienteDAO.getInstance().isExist(id);
     }
-
     public ArrayList<IngredienteBEAN> listaIngrediente() {
         return IngredienteDAO.getInstance().findAllIngrediente();
     }
+//----------------------------------------------------------------------------------------------
 
     public ArrayList<IngredienteBEAN> listIngredientePizza(PizzaBEAN pizza) {
         return PizzaDAO.getInstance().listIngredientePizza(pizza);
@@ -95,5 +97,31 @@ public class Control {
 
     public ArrayList<PizzaBEAN> listaPizza() {
         return PizzaDAO.getInstance().findAllPizza();
+    }
+    
+    //--------------------------------------------------------------------------------------------------------------------
+    
+    public ArrayList<PizzaBEAN> listCardapioPizza(CardapioBEAN cardapio) {
+        return CardapioDAO.getInstance().listCardapioPizza(cardapio);
+    }
+
+    public void addCardapio(CardapioBEAN cardapio, ArrayList<PizzaBEAN> pizzaList) throws SQLException {
+        CardapioDAO.getInstance().create(cardapio, pizzaList);
+    }
+
+    public void updateCardapio(CardapioBEAN cardapio, ArrayList<PizzaBEAN> pizzaList) {
+        CardapioDAO.getInstance().update(cardapio, pizzaList);
+    }
+
+    public void updateCardapio(CardapioBEAN cardapio) {
+        CardapioDAO.getInstance().update(cardapio);
+    }
+
+    public CardapioBEAN findCardapio(int id) {
+        return CardapioDAO.getInstance().findCardapio(id);
+    }
+
+    public ArrayList<CardapioBEAN> listaCardapio() {
+        return CardapioDAO.getInstance().findAllCardapio();
     }
 }
