@@ -2,6 +2,8 @@ package Control;
 
 import Model.CardapioBEAN;
 import Model.CardapioDAO;
+import Model.EventoBEAN;
+import Model.EventoDAO;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -70,11 +72,41 @@ public class Control {
     public Boolean isExistIngrediente(int id) {
         return IngredienteDAO.getInstance().isExist(id);
     }
+
     public ArrayList<IngredienteBEAN> listaIngrediente() {
         return IngredienteDAO.getInstance().findAllIngrediente();
     }
-//----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
+    public void addEvento(EventoBEAN evento) {
+        EventoDAO.getInstance().create(evento);
+    }
+
+    public void updateEvento(EventoBEAN evento) {
+        EventoDAO.getInstance().update(evento);
+    }
+
+    public void deleteEvento(EventoBEAN evento) {
+        EventoDAO.getInstance().delete(evento);
+    }
+
+    public EventoBEAN findEvento(int id) {
+        return EventoDAO.getInstance().findEvento(id);
+    }
+
+    public int findIdEvento(EventoBEAN evento) {
+        return EventoDAO.getInstance().findId(evento);
+    }
+
+    public Boolean isExistEvento(int id) {
+        return EventoDAO.getInstance().isExist(id);
+    }
+
+    public ArrayList<EventoBEAN> listaEvento() {
+        return EventoDAO.getInstance().findAllEvento();
+    }
+
+//----------------------------------------------------------------------------------------------
     public ArrayList<IngredienteBEAN> listIngredientePizza(PizzaBEAN pizza) {
         return PizzaDAO.getInstance().listIngredientePizza(pizza);
     }
@@ -98,9 +130,8 @@ public class Control {
     public ArrayList<PizzaBEAN> listaPizza() {
         return PizzaDAO.getInstance().findAllPizza();
     }
-    
+
     //--------------------------------------------------------------------------------------------------------------------
-    
     public ArrayList<PizzaBEAN> listCardapioPizza(CardapioBEAN cardapio) {
         return CardapioDAO.getInstance().listCardapioPizza(cardapio);
     }

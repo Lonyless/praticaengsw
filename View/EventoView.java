@@ -7,16 +7,18 @@ import java.util.Date;
 import java.util.List;
 
 import Control.Control;
+import Model.CardapioBEAN;
+import Model.EventoBEAN;
 import Model.FornecedorBEAN;
 import Model.IngredienteBEAN;
 import javax.swing.table.DefaultTableModel;
 
-public class IngredienteView extends javax.swing.JFrame {
+public class EventoView extends javax.swing.JFrame {
 
-    public IngredienteView() {
+    public EventoView() {
         initComponents();
         listar();
-        fillFornecedorCB();
+        fillCardapioCB();
 
         this.setLocationRelativeTo(null);
     }
@@ -34,18 +36,16 @@ public class IngredienteView extends javax.swing.JFrame {
         desativarButton = new javax.swing.JButton();
         cancelarButton = new javax.swing.JButton();
         jScrollPane = new javax.swing.JScrollPane();
-        ingredienteTable = new javax.swing.JTable();
+        eventoTable = new javax.swing.JTable();
         pesquisarButton = new javax.swing.JButton();
         pesquisarTF = new javax.swing.JTextField();
         nomeLabel = new javax.swing.JLabel();
         ativosCK = new javax.swing.JCheckBox();
         nomeTF = new javax.swing.JTextField();
         novoButton = new javax.swing.JButton();
-        medidaLabel = new javax.swing.JLabel();
         editarButton = new javax.swing.JButton();
-        medidaCB = new javax.swing.JComboBox<>();
-        fornecedorLabel = new javax.swing.JLabel();
-        fornecedorCB = new javax.swing.JComboBox<>();
+        cardapioLabel = new javax.swing.JLabel();
+        cardapioCB = new javax.swing.JComboBox<>();
 
         erroDialog.setMinimumSize(new java.awt.Dimension(273, 135));
 
@@ -105,20 +105,20 @@ public class IngredienteView extends javax.swing.JFrame {
         cancelarButton.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         cancelarButton.setText("Cancelar");
 
-        ingredienteTable.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
-        ingredienteTable.setModel(new javax.swing.table.DefaultTableModel(
+        eventoTable.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        eventoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nome", "Tipo Medida", "Fornecedor", "Ativo"
+                "ID", "Nome", "Cardapio", "Ativo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -129,11 +129,10 @@ public class IngredienteView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane.setViewportView(ingredienteTable);
-        if (ingredienteTable.getColumnModel().getColumnCount() > 0) {
-            ingredienteTable.getColumnModel().getColumn(0).setPreferredWidth(25);
-            ingredienteTable.getColumnModel().getColumn(2).setPreferredWidth(60);
-            ingredienteTable.getColumnModel().getColumn(4).setPreferredWidth(30);
+        jScrollPane.setViewportView(eventoTable);
+        if (eventoTable.getColumnModel().getColumnCount() > 0) {
+            eventoTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+            eventoTable.getColumnModel().getColumn(3).setPreferredWidth(30);
         }
 
         pesquisarButton.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
@@ -162,9 +161,6 @@ public class IngredienteView extends javax.swing.JFrame {
             }
         });
 
-        medidaLabel.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
-        medidaLabel.setText("Tipo de Medida");
-
         editarButton.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         editarButton.setText("Editar");
         editarButton.addActionListener(new java.awt.event.ActionListener() {
@@ -173,14 +169,11 @@ public class IngredienteView extends javax.swing.JFrame {
             }
         });
 
-        medidaCB.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
-        medidaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<selecione>", "litros", "kilos", "unidade", "gramas" }));
+        cardapioLabel.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        cardapioLabel.setText("Cardapio");
 
-        fornecedorLabel.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
-        fornecedorLabel.setText("Fornecedor");
-
-        fornecedorCB.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
-        fornecedorCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<selecione>" }));
+        cardapioCB.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        cardapioCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<selecione>" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -189,12 +182,11 @@ public class IngredienteView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fornecedorCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cardapioCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fornecedorLabel)
+                            .addComponent(cardapioLabel)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(medidaLabel)
                                 .addComponent(jScrollPane)
                                 .addComponent(nomeLabel)
                                 .addComponent(nomeTF)
@@ -216,8 +208,7 @@ public class IngredienteView extends javax.swing.JFrame {
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                             .addComponent(ativosCK)
                                             .addGap(84, 84, 84)
-                                            .addComponent(pesquisarButton))))
-                                .addComponent(medidaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                            .addComponent(pesquisarButton))))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -228,17 +219,13 @@ public class IngredienteView extends javax.swing.JFrame {
                 .addComponent(nomeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nomeTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(medidaLabel)
-                .addGap(15, 15, 15)
-                .addComponent(medidaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(fornecedorLabel)
                 .addGap(18, 18, 18)
-                .addComponent(fornecedorCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
-                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                .addComponent(cardapioLabel)
                 .addGap(18, 18, 18)
+                .addComponent(cardapioCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(novoButton)
@@ -259,17 +246,17 @@ public class IngredienteView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void salvarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarButtonActionPerformed
-        alterar(selectedIngrediente.getId(), nomeTF.getText(), (String) medidaCB.getSelectedItem(), fornecedorCB.getSelectedIndex());
+        alterar(selectedEvento.getId(), nomeTF.getText(), cardapioCB.getSelectedIndex()-1);
         listar();
         nomeTF.setText("");
-        medidaCB.setSelectedIndex(0);
-        fornecedorCB.setSelectedIndex(0);
+
+        cardapioCB.setSelectedIndex(0);
     }//GEN-LAST:event_salvarButtonActionPerformed
 
     private void desativarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desativarButtonActionPerformed
-        DefaultTableModel model = (DefaultTableModel) ingredienteTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) eventoTable.getModel();
 
-        desativarAtivar((Integer) model.getValueAt(ingredienteTable.getSelectedRow(), 0), (Boolean) model.getValueAt(ingredienteTable.getSelectedRow(), 4));
+        desativarAtivar((Integer) model.getValueAt(eventoTable.getSelectedRow(), 0), (Boolean) model.getValueAt(eventoTable.getSelectedRow(), 3));
         listar();
     }//GEN-LAST:event_desativarButtonActionPerformed
 
@@ -278,31 +265,30 @@ public class IngredienteView extends javax.swing.JFrame {
     }//GEN-LAST:event_pesquisarButtonActionPerformed
 
     private void novoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoButtonActionPerformed
-        inserir(nomeTF.getText(), (String) medidaCB.getSelectedItem(), fornecedorCB.getSelectedIndex());
+        inserir(nomeTF.getText(), cardapioCB.getSelectedIndex()-1);
         listar();
         nomeTF.setText("");
-        medidaCB.setSelectedIndex(0);
-        fornecedorCB.setSelectedIndex(0);
+
+        cardapioCB.setSelectedIndex(0);
     }//GEN-LAST:event_novoButtonActionPerformed
 
     private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
-        DefaultTableModel model = (DefaultTableModel) ingredienteTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) eventoTable.getModel();
 
-        nomeTF.setText((String) model.getValueAt(ingredienteTable.getSelectedRow(), 1));
-        medidaCB.setSelectedItem((String) model.getValueAt(ingredienteTable.getSelectedRow(), 2));
-        fornecedorCB.setSelectedItem((String) model.getValueAt(ingredienteTable.getSelectedRow(), 3));
+        nomeTF.setText((String) model.getValueAt(eventoTable.getSelectedRow(), 1));
+        cardapioCB.setSelectedItem((String) model.getValueAt(eventoTable.getSelectedRow(), 2));
 
-        selectedIngrediente.setId((Integer) model.getValueAt(ingredienteTable.getSelectedRow(), 0));
+        selectedEvento.setId((Integer) model.getValueAt(eventoTable.getSelectedRow(), 0));
     }//GEN-LAST:event_editarButtonActionPerformed
 
     private void disposeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disposeButtonActionPerformed
         erroDialog.dispose();
     }//GEN-LAST:event_disposeButtonActionPerformed
 
-    IngredienteBEAN selectedIngrediente = new IngredienteBEAN();
+    EventoBEAN selectedEvento = new EventoBEAN();
 
     static Control controle = new Control();
-    ArrayList<FornecedorBEAN> listaFornecedor = new ArrayList<FornecedorBEAN>();
+    ArrayList<CardapioBEAN> listaCardapio = new ArrayList<CardapioBEAN>();
 
     public static Date convert_StringToDate(String dataStr) {
         java.sql.Date data = null;
@@ -316,19 +302,19 @@ public class IngredienteView extends javax.swing.JFrame {
         return data;
     }
 
-    private void fillFornecedorCB() {
+    private void fillCardapioCB() {
 
-        listaFornecedor = controle.listaFornecedor();
+        listaCardapio = controle.listaCardapio();
 
-        for (FornecedorBEAN fornecedor : listaFornecedor) {
-            fornecedorCB.addItem(fornecedor.getRazaoSocial());
+        for (CardapioBEAN cardapio : listaCardapio) {
+            cardapioCB.addItem(cardapio.getNome());
         }
 
     }
 
     private void pesquisar(String str, boolean cbAtivo) {
 
-        DefaultTableModel model = (DefaultTableModel) ingredienteTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) eventoTable.getModel();
         model.setRowCount(0);
 
         if (str.equals("")) {
@@ -373,86 +359,76 @@ public class IngredienteView extends javax.swing.JFrame {
 
     private void listar() {
 
-        DefaultTableModel model = (DefaultTableModel) ingredienteTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) eventoTable.getModel();
 
         model.setRowCount(0);
 
-        List<IngredienteBEAN> listIngrediente = controle.listaIngrediente();
-        List<FornecedorBEAN> listFornecedor = controle.listaFornecedor();
+        List<EventoBEAN> listEvento = controle.listaEvento();
+        List<CardapioBEAN> listCardapio = controle.listaCardapio();
 
-        for (IngredienteBEAN ingrediente : listIngrediente) {
+        for (EventoBEAN evento : listEvento) {
 
             boolean ativo = false;
 
-            if (ingrediente.getStatus() == 1) {
+            if (evento.getStatus() == 1) {
                 ativo = true;
             }
 
             model.addRow(new Object[]{
-                ingrediente.getId(),
-                ingrediente.getNome(),
-                ingrediente.getMedida(),
-                controle.findFornecedor(ingrediente.getId_fornecedor()).getRazaoSocial(),
+                evento.getId(),
+                evento.getNome(),
+                controle.findCardapio(evento.getId_cardapio()).getNome(),
                 ativo
             });
 
         }
     }
 
-    private void inserir(String nome, String medida, int indexFornecedor) {
+    private void inserir(String nome, int indexCardapio) {
 
-        if (indexFornecedor != 0 && !medida.equals("<selecione>")) {
-            FornecedorBEAN fornecedor = listaFornecedor.get(indexFornecedor);
+        CardapioBEAN cardapio = listaCardapio.get(indexCardapio);
 
-            IngredienteBEAN ingrediente = new IngredienteBEAN(nome, medida, fornecedor.getId(), 1);
+        EventoBEAN evento = new EventoBEAN(nome, cardapio.getId(), 1);
 
-            List<IngredienteBEAN> listIngrediente = controle.listaIngrediente();
+        List<EventoBEAN> listEvento = controle.listaEvento();
 
-            boolean exist = false;
+        boolean exist = false;
 
-            for (IngredienteBEAN _ingrediente : listIngrediente) {
-                if (ingrediente.getNome() == _ingrediente.getNome()
-                        && ingrediente.getId_fornecedor() == _ingrediente.getId_fornecedor()) {
-                    exist = true;
-                }
+        for (EventoBEAN _evento : listEvento) {
+            if (evento.getNome() == _evento.getNome()
+                    && evento.getId_cardapio() == _evento.getId_cardapio()) {
+                exist = true;
             }
+        }
 
-            if (!exist) {
-                controle.addIngrediente(ingrediente);
-            }
-
-        } else {
-            erroDialog.setVisible(true);
+        if (!exist) {
+            controle.addEvento(evento);
         }
 
     }
 
     private static void desativarAtivar(int id, boolean status) {
 
-        IngredienteBEAN ingrediente = controle.findIngrediente(id);
+        EventoBEAN evento = controle.findEvento(id);
 
         if (status == false) {
-            ingrediente.setStatus(1);
+            evento.setStatus(1);
         } else {
-            ingrediente.setStatus(0);
+            evento.setStatus(0);
 
         }
 
-        controle.updateIngrediente(ingrediente);
+        controle.updateEvento(evento);
 
     }
 
-    private void alterar(int id, String nome, String medida, int indexFornecedor) {
+    private void alterar(int id, String nome, int indexCardapio) {
 
-        if (indexFornecedor != 0 && !medida.equals("<selecione>")) {
-            FornecedorBEAN fornecedor = listaFornecedor.get(indexFornecedor);
+        CardapioBEAN cardapio = listaCardapio.get(indexCardapio);
 
-            IngredienteBEAN ingrediente = new IngredienteBEAN(id, nome, medida, 1, fornecedor.getId());
+        EventoBEAN evento = new EventoBEAN(id, nome, 1, cardapio.getId());
 
-            controle.updateIngrediente(ingrediente);
-        } else {
-            erroDialog.setVisible(true);
-        }
+        controle.updateEvento(evento);
 
     }
 
@@ -483,7 +459,7 @@ public class IngredienteView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new IngredienteView().setVisible(true);
+                new EventoView().setVisible(true);
             }
         });
     }
@@ -491,17 +467,15 @@ public class IngredienteView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox ativosCK;
     private javax.swing.JButton cancelarButton;
+    private javax.swing.JComboBox<String> cardapioCB;
+    private javax.swing.JLabel cardapioLabel;
     private javax.swing.JButton desativarButton;
     private javax.swing.JButton disposeButton;
     private javax.swing.JButton editarButton;
     private javax.swing.JDialog erroDialog;
-    private javax.swing.JComboBox<String> fornecedorCB;
-    private javax.swing.JLabel fornecedorLabel;
-    private javax.swing.JTable ingredienteTable;
+    private javax.swing.JTable eventoTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane;
-    private javax.swing.JComboBox<String> medidaCB;
-    private javax.swing.JLabel medidaLabel;
     private javax.swing.JLabel nomeLabel;
     private javax.swing.JTextField nomeTF;
     private javax.swing.JButton novoButton;
